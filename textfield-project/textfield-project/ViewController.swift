@@ -25,10 +25,13 @@ class ViewController: UIViewController {
         textField.borderStyle = .roundedRect
         textField.clearButtonMode = .always
         textField.returnKeyType = .next
+        
+        // 먼저 반응해야 하는 녀석으로 만들어준 것
+        textField.becomeFirstResponder()
     }
     
     @IBAction func doneButtonTapped(_ sender: UIButton) {
-        
+        textField.resignFirstResponder()
     }
 
 }
@@ -55,6 +58,8 @@ extension ViewController: UITextFieldDelegate {
     
     // TextField 내용 한글자 한글자가 입력/삭제될 때 호출 (허락)
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        // 10글자로 제한
         guard let textFieldText = textField.text,
               let rangeOfTextToReplace = Range(range, in: textFieldText) else {
                 return false
@@ -67,7 +72,14 @@ extension ViewController: UITextFieldDelegate {
     // enter 키 누른 후 다음 동작을 허락할 것인지
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print(#function)
+        textField.endEditing(true)
         return true
+    }
+    
+    // 화면 탭 감지
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        // textField.resignFirstResponder() 와 행동이 같다.
     }
     
     // 입력 끝을 허락할지
@@ -79,5 +91,6 @@ extension ViewController: UITextFieldDelegate {
     // 입력이 끝나면 호출
     func textFieldDidEndEditing(_ textField: UITextField) {
         print(#function)
+        textField.text = ""
     }
 }
