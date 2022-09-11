@@ -86,8 +86,10 @@ class ViewController: UIViewController {
             return (.yellow, "과체중")
         case 24.9..<29.9:
             return (.orange, "중도 비만")
-        default:
+        case 29.9...:
             return (.red, "고도 비만")
+        default:
+            return (.black, "오류")
         }
     }
 }
