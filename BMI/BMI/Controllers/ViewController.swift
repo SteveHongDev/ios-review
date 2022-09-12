@@ -13,9 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var weightTextField: UITextField!
     @IBOutlet weak var calculateButton: UIButton!
     
-    var bmiNumber: Float?
-    var descriptionString: String?
-    var bmiColor: UIColor?
+    var bmiManager = BMICalculateManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,43 +53,13 @@ class ViewController: UIViewController {
         if segue.identifier == "toSecondVC" {
             let VC = segue.destination as! SecondViewController
             
-            VC.bmiNumber = self.bmiNumber
-            (VC.bmiColor, VC.descriptionString) = getBMIInfo()
+            VC.bmi = bmiManager.getBMI(height: heightTextField.text!, weight: weightTextField.text!)
             
             heightTextField.text = ""
             weightTextField.text = ""
         }
     }
-
-    @IBAction func calculateButtonTapped(_ sender: UIButton) {
-        bmiNumber = calculateBMI(height: heightTextField.text!, weight: weightTextField.text!)
-    }
     
-    private func calculateBMI(height: String, weight: String) -> Float {
-        guard let h = Float(height), let w = Float(weight) else { return 0.0 }
-        var bmi = w / (h * h) * 10000
-        bmi = round(bmi * 10) / 10
-        return bmi
-    }
-    
-    private func getBMIInfo() -> (UIColor, String) {
-        guard let bmi = bmiNumber else { return (UIColor.black, "오류") }
-        
-        switch bmi {
-        case ..<18.5:
-            return (.blue, "저체중")
-        case 18.5..<22.9:
-            return (.green, "표준")
-        case 22.9..<24.9:
-            return (.yellow, "과체중")
-        case 24.9..<29.9:
-            return (.orange, "중도 비만")
-        case 29.9...:
-            return (.red, "고도 비만")
-        default:
-            return (.black, "오류")
-        }
-    }
 }
 
 extension ViewController: UITextFieldDelegate {

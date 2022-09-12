@@ -12,9 +12,7 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var recalculateButton: UIButton!
     
-    var bmiNumber: Float?
-    var descriptionString: String?
-    var bmiColor: UIColor?
+    var bmi: BMI?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,10 +27,10 @@ class SecondViewController: UIViewController {
         bmiLabel.clipsToBounds = true
         bmiLabel.backgroundColor = .gray
         
-        guard let bmi = bmiNumber else { return }
-        bmiLabel.text = String(bmi)
-        descriptionLabel.text = descriptionString
-        bmiLabel.backgroundColor = bmiColor
+        guard let bmi = bmi else { return }
+        bmiLabel.text = String(bmi.value)
+        descriptionLabel.text = bmi.description
+        bmiLabel.backgroundColor = bmi.matchColor
     }
     
     @IBAction func recalculateButtonTapped(_ sender: UIButton) {
